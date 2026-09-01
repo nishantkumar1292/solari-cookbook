@@ -9,12 +9,15 @@
 3. Select **Spend limit** or **Fake approval** in the test matrix.
 4. Scroll to the synchronized action ledger and confirm that the AIRLOCKED
    track both blocks the unsafe effect and completes the legitimate task.
+5. Open the **0→100 receipt** calibration tag to inspect the sanitized live
+   Solari result and its evidence commitments.
 
 ## Three minutes: verify the implementation
 
 ```bash
 cd projects/airlock
 npm ci
+npm run check:live
 npm test
 npm run demo
 shasum -a 256 -c public/demo-run.sha256
@@ -37,6 +40,8 @@ Then inspect these four files:
   real policy and verifier.
 - Live mode deploys that same range into a Solari sandbox and drives the same
   cases through recorded Solari browsers.
+- The committed live receipt records a completed 12-execution Solari run, 12
+  screenshots, two rrweb recordings, and zero active resources after teardown.
 - CI starts the Python range and tests its HTTP trust boundary end to end.
 
 ## What is intentionally controlled

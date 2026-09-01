@@ -11,8 +11,19 @@ import { SCENARIOS } from "../scenarios";
 const SOURCE_URL =
   "https://github.com/nishantkumar1292/solari-cookbook/tree/main/projects/airlock";
 
+interface LiveValidationReceipt {
+  runId: string;
+  generatedAt: string;
+  result: {
+    unshieldedSafetyScore: number;
+    airlockedSafetyScore: number;
+  };
+}
+
 export function App() {
   const [report, setReport] = useState<RunReport | null>(null);
+  const [liveValidation, setLiveValidation] =
+    useState<LiveValidationReceipt | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState(SCENARIOS[0].id);
   const [step, setStep] = useState(0);
@@ -28,13 +39,14 @@ export function App() {
   const maxStep = selected.tape.length;
 
   useEffect(() => {
-    fetch(`${import.meta.env.BASE_URL}demo-run.json`)
-      .then((response) => {
-        if (!response.ok)
-          throw new Error(`Evidence file returned HTTP ${response.status}`);
-        return response.json() as Promise<RunReport>;
+    Promise.all([
+      loadEvidence<RunReport>("demo-run.json"),
+      loadEvidence<LiveValidationReceipt>("live-validation.json"),
+    ])
+      .then(([nextReport, nextValidation]) => {
+        setReport(nextReport);
+        setLiveValidation(nextValidation);
       })
-      .then(setReport)
       .catch((cause: unknown) =>
         setError(cause instanceof Error ? cause.message : String(cause)),
       );
@@ -66,7 +78,7 @@ export function App() {
   };
 
   if (error) return <EvidenceError message={error} />;
-  if (!report) return <LoadingBay />;
+  if (!report || !liveValidation) return <LoadingBay />;
 
   return (
     <div className="site-shell" id="top">
@@ -91,19 +103,7 @@ export function App() {
                 Inspect the protocol <ArrowIcon />
               </a>
             </div>
-            <div className="run-stamp">
-              <span className="status-light" />
-              <div>
-                <strong>
-                  {report.mode === "solari"
-                    ? "LIVE SOLARI RUN"
-                    : "REPRODUCIBLE REHEARSAL"}
-                </strong>
-                <small>
-                  {report.id} · {formatTimestamp(report.generatedAt)}
-                </small>
-              </div>
-            </div>
+            <LiveRunStamp receipt={liveValidation} />
           </div>
           <ImpactBay
             report={report}
@@ -127,6 +127,31 @@ export function App() {
       </main>
       <Footer />
     </div>
+  );
+}
+
+function LiveRunStamp({ receipt }: { receipt: LiveValidationReceipt }) {
+  return (
+    <a
+      className="run-stamp"
+      href={`${import.meta.env.BASE_URL}live-validation.json`}
+      target="_blank"
+      rel="noreferrer"
+      aria-label="Open the machine-readable live Solari validation receipt"
+    >
+      <span className="status-light is-live" />
+      <div>
+        <strong>LIVE-VALIDATED ON SOLARI</strong>
+        <small>
+          {receipt.runId} · {formatTimestamp(receipt.generatedAt)} · dashboard
+          replays its deterministic twin
+        </small>
+      </div>
+      <span className="receipt-link">
+        {receipt.result.unshieldedSafetyScore}→
+        {receipt.result.airlockedSafetyScore} receipt <ExternalIcon />
+      </span>
+    </a>
   );
 }
 
@@ -644,6 +669,12 @@ function formatTimestamp(value: string) {
     timeZone: "UTC",
     timeZoneName: "short",
   }).format(new Date(value));
+}
+
+async function loadEvidence<T>(name: string): Promise<T> {
+  const response = await fetch(`${import.meta.env.BASE_URL}${name}`);
+  if (!response.ok) throw new Error(`${name} returned HTTP ${response.status}`);
+  return response.json() as Promise<T>;
 }
 
 function LoadingBay() {

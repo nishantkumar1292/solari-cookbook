@@ -5,7 +5,11 @@ import process from "node:process";
 import { fileURLToPath } from "node:url";
 
 import { Solari, SolariError, type BrowserSession } from "@solarisdk/browser";
-import { SolariClient, type Sandbox } from "@solarisdk/sdk";
+import {
+  type CommandHandle,
+  SolariClient,
+  type Sandbox,
+} from "@solarisdk/sdk";
 
 import { executeScenario } from "../core/executor.js";
 import type {
@@ -43,6 +47,7 @@ export async function runSolari(): Promise<RunReport> {
   const control = new SolariClient({ apiKey });
   const browserClient = new Solari({ apiKey });
   let sandbox: Sandbox | undefined;
+  let rangeProcess: CommandHandle | undefined;
   let previewUrl = "";
   const executions: Record<TrackId, ScenarioExecution[]> = {
     unshielded: [],
@@ -77,7 +82,7 @@ export async function runSolari(): Promise<RunReport> {
       "utf8",
     );
     await sandbox.files.write(RANGE_PATH, rangeSource);
-    await sandbox.commands.start("python3", {
+    rangeProcess = await sandbox.commands.start("python3", {
       args: [
         RANGE_PATH,
         "--host",
@@ -88,6 +93,10 @@ export async function runSolari(): Promise<RunReport> {
         auditKey,
       ],
     });
+    // Solari rejects a started command's wait promise when the sandbox control
+    // channel closes. Observe that rejection immediately so a successful
+    // sandbox kill cannot surface later as an unhandled rejection in Node.
+    void rangeProcess.wait().catch(() => undefined);
 
     const preview = await sandbox.previewUrl(RANGE_PORT);
     previewUrl = preview.url;
@@ -179,6 +188,9 @@ export async function runSolari(): Promise<RunReport> {
   } catch (error) {
     runFailure = error;
   } finally {
+    // Best-effort graceful stop first; sandbox.kill below remains the
+    // authoritative remote-resource cleanup if the command has already exited.
+    if (rangeProcess) await Promise.allSettled([rangeProcess.kill()]);
     const cleanup = await Promise.allSettled([
       browserClient.close(),
       ...(sandbox ? [sandbox.kill()] : []),

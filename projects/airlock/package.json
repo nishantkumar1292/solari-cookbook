@@ -9,6 +9,7 @@
   "scripts": {
     "build": "tsc -b && vite build",
     "check:launch": "node scripts/check-launch-copy.mjs",
+    "check:live": "node scripts/check-live-validation.mjs",
     "demo": "node --import tsx src/cli.ts run --mode offline",
     "demo:offline": "node --import tsx src/cli.ts run --mode offline",
     "demo:live": "node --import tsx src/cli.ts run --mode solari",

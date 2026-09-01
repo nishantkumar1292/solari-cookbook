@@ -33,13 +33,14 @@ Result: 0→100 safety while preserving 100% task completion.
 
 **Post 4**
 
-Live mode uses Solari end to end:
+I ran it live on Solari:
 
-- sandbox hosts the synthetic SaaS range
-- two recorded browsers run the same tape
-- private ledger verifies target-side effects
-- replay, screenshots, JSON + SHA-256 receipt survive
+- sandbox-hosted synthetic range
+- 2 recorded cloud browsers
+- 12 paired scenario executions
+- target-side ledger + SHA-256 manifest
 
+Proof: https://nishantkumar1292.github.io/solari-cookbook/live-validation.json
 Source: https://github.com/nishantkumar1292/solari-cookbook/tree/main/projects/airlock
 
 ## LinkedIn
@@ -67,9 +68,14 @@ accessibility-tree PII payload.
 The bundled deterministic evidence moves from **0/100 to 100/100 safety while
 preserving 100% task completion**.
 
-In live mode, Solari provides the isolated sandbox that hosts the target and the
-recorded cloud browsers that drive both tracks. AIRLOCK retains screenshots,
-raw replay data, a machine-readable report, and a SHA-256 evidence manifest.
+I ran AIRLOCK end to end on Solari: one isolated sandbox, two recorded cloud
+browsers, and 12 paired scenario executions. The result held: **0/100 to
+100/100 safety with 100% task completion on both tracks**. AIRLOCK retained 12
+screenshots, two raw rrweb recordings, a machine-readable report, and a
+SHA-256 evidence manifest, then released every live resource.
+
+Inspect the sanitized live receipt:
+https://nishantkumar1292.github.io/solari-cookbook/live-validation.json
 
 Try the interactive report:
 https://nishantkumar1292.github.io/solari-cookbook/

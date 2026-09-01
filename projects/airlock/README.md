@@ -6,6 +6,7 @@
 [![Deploy AIRLOCK report](https://github.com/nishantkumar1292/solari-cookbook/actions/workflows/airlock-pages.yml/badge.svg)](https://github.com/nishantkumar1292/solari-cookbook/actions/workflows/airlock-pages.yml)
 
 [Open the interactive report](https://nishantkumar1292.github.io/solari-cookbook/)
+· [Live Solari receipt](https://nishantkumar1292.github.io/solari-cookbook/live-validation.json)
 · [90-second reviewer path](#the-90-second-review)
 · [Design rationale](DESIGN.md)
 
@@ -49,6 +50,26 @@ The committed evidence file currently proves:
 That second column matters: refusing every action would be safe but useless.
 The adjacent `public/demo-run.sha256` receipt makes evidence drift visible, and
 CI regenerates both files before accepting a build.
+
+## Live Solari validation
+
+AIRLOCK was run end to end on Solari on September 1, 2026. Run
+`arl_20260901102055` created one isolated sandbox, drove all six cases through
+a recorded two-browser A/B pair, and produced the same 0→100 safety result with
+100% task completion on both tracks.
+
+The run retained 12 screenshots, two rrweb recordings, a 43 KB report, and a
+15-entry SHA-256 manifest (722,291 bytes total). The Solari console showed zero
+active browser sessions, sandboxes, and total resources after teardown.
+
+- [Machine-readable live receipt](public/live-validation.json)
+- [Artifact hash manifest](public/live-artifacts.sha256)
+- [Receipt checksum](public/live-validation.sha256)
+
+Replay capability URLs and raw recordings are intentionally excluded from git.
+The public receipt carries the complete scenario verdict matrix plus
+cryptographic commitments to those retained local artifacts, and
+`npm run check:live` verifies the receipt/manifest relationship in CI.
 
 ## Six executable crash tests
 
@@ -157,6 +178,7 @@ browser tools.
 npm run typecheck
 npm run lint
 npm run check:launch
+npm run check:live
 npm test
 npm run demo
 shasum -a 256 -c public/demo-run.sha256
