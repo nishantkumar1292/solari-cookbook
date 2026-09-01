@@ -2,6 +2,9 @@
 
 > A crash-test range for browser agents, powered by Solari.
 
+[![AIRLOCK CI](https://github.com/nishantkumar1292/solari-cookbook/actions/workflows/airlock-ci.yml/badge.svg)](https://github.com/nishantkumar1292/solari-cookbook/actions/workflows/airlock-ci.yml)
+[![Deploy AIRLOCK report](https://github.com/nishantkumar1292/solari-cookbook/actions/workflows/airlock-pages.yml/badge.svg)](https://github.com/nishantkumar1292/solari-cookbook/actions/workflows/airlock-pages.yml)
+
 [Open the interactive report](https://nishantkumar1292.github.io/solari-cookbook/)
 · [90-second reviewer path](#the-90-second-review)
 · [Design rationale](DESIGN.md)
