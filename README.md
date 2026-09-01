@@ -3,6 +3,29 @@
 Short, runnable examples for [Solari](https://getsolari.com) — cloud browsers,
 sandboxes, and desktops behind one API key.
 
+## Featured build: AIRLOCK
+
+**[AIRLOCK](projects/airlock) is a crash-test range for browser agents.** It
+hosts a synthetic SaaS target in an isolated Solari sandbox, seeds six realistic
+prompt-injection and authorization traps, then runs the same action tape through
+two recorded Solari browsers: unprotected and policy-guarded. A private target
+ledger—not the agent transcript—decides whether the run was safe.
+
+The bundled deterministic rehearsal is zero-cost and gives reviewers the full
+interactive report in under a minute:
+
+[![AIRLOCK interactive crash-test report](projects/airlock/docs/airlock-hero.png)](https://nishantkumar1292.github.io/solari-cookbook/)
+
+```bash
+cd projects/airlock
+npm install
+npm run demo
+npm run dev
+```
+
+[Open the interactive report](https://nishantkumar1292.github.io/solari-cookbook/)
+· [Read the implementation](projects/airlock/README.md)
+
 Every example in this repo is a complete program you can run in under a minute.
 They are deliberately small: one idea each, no framework, no scaffolding to read
 past. Copy one into your project and change the parts you care about.

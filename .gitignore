@@ -1,8 +1,13 @@
 node_modules/
 package-lock.json
+!projects/airlock/package-lock.json
 .env
 __pycache__/
 *.pyc
 .venv/
 venv/
 screenshot.png
+dist/
+artifacts/
+*.log
+*.tsbuildinfo
