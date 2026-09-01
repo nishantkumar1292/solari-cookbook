@@ -47,6 +47,8 @@ The committed evidence file currently proves:
 | AIRLOCKED  | 100 / 100 |                       100% |
 
 That second column matters: refusing every action would be safe but useless.
+The adjacent `public/demo-run.sha256` receipt makes evidence drift visible, and
+CI regenerates both files before accepting a build.
 
 ## Six executable crash tests
 
@@ -155,6 +157,8 @@ browser tools.
 npm run typecheck
 npm run lint
 npm test
+npm run demo
+shasum -a 256 -c public/demo-run.sha256
 npm run build
 ```
 
@@ -174,6 +178,7 @@ src/runner/solari.ts        live sandbox, browser, replay, and cleanup adapter
 src/ui/                     interactive synchronized crash report
 tests/                      policy, end-to-end, and HTTP boundary tests
 public/demo-run.json        generated evidence displayed by the public demo
+public/demo-run.sha256      committed digest checked after regeneration in CI
 ```
 
 The visual system is documented in [DESIGN.md](DESIGN.md). It deliberately uses

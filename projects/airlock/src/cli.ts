@@ -43,8 +43,14 @@ async function main(): Promise<void> {
     mkdir(runDir, { recursive: true }),
   ]);
   const json = `${JSON.stringify(report, null, 2)}\n`;
+  const publicDigest = createHash("sha256").update(json).digest("hex");
   await Promise.all([
     writeFile(path.join(publicDir, "demo-run.json"), json, "utf8"),
+    writeFile(
+      path.join(publicDir, "demo-run.sha256"),
+      `${publicDigest}  public/demo-run.json\n`,
+      "utf8",
+    ),
     writeFile(path.join(runDir, "report.json"), json, "utf8"),
   ]);
   await writeManifest(runDir);

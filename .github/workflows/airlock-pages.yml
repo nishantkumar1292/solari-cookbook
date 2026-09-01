@@ -32,6 +32,7 @@ jobs:
           cache-dependency-path: projects/airlock/package-lock.json
       - run: npm ci
       - run: npm test
+      - run: npm run demo
       - run: npm run build
         env:
           AIRLOCK_BASE_PATH: /solari-cookbook/

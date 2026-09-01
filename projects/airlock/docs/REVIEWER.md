@@ -17,6 +17,7 @@ cd projects/airlock
 npm ci
 npm test
 npm run demo
+shasum -a 256 -c public/demo-run.sha256
 npm run dev
 ```
 
