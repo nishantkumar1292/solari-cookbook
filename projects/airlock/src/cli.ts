@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 import { createHash } from "node:crypto";
+import { existsSync } from "node:fs";
 import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
-import process from "node:process";
+import process, { loadEnvFile } from "node:process";
 
 import { runOffline } from "./runner/offline.js";
 import { runSolari } from "./runner/solari.js";
@@ -19,6 +20,7 @@ async function main(): Promise<void> {
   if (mode !== "offline" && mode !== "solari") {
     throw new Error(`Unknown mode “${mode}”. Expected offline or solari.`);
   }
+  if (mode === "solari" && existsSync(".env")) loadEnvFile(".env");
 
   const report =
     mode === "solari"

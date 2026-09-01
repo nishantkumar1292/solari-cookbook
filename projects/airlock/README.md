@@ -96,7 +96,8 @@ replace the tape without changing the policy or verifier.
 ## Run it on Solari
 
 ```bash
-export SOLARI_API_KEY=slr_live_...
+cp .env.example .env
+# Put your slr_live_... key in .env (or export SOLARI_API_KEY instead).
 npm run demo:live
 npm run dev
 ```
