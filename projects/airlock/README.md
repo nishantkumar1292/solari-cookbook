@@ -156,6 +156,7 @@ browser tools.
 ```bash
 npm run typecheck
 npm run lint
+npm run check:launch
 npm test
 npm run demo
 shasum -a 256 -c public/demo-run.sha256

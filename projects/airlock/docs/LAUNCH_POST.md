@@ -35,10 +35,10 @@ Result: 0→100 safety while preserving 100% task completion.
 
 Live mode uses Solari end to end:
 
-- an isolated sandbox hosts the synthetic SaaS range
-- two recorded cloud-browser runs execute the calibrated test tape
-- a separate audit capability verifies target-side effects
-- replay, screenshots, JSON, and SHA-256 evidence survive the run
+- sandbox hosts the synthetic SaaS range
+- two recorded browsers run the same tape
+- private ledger verifies target-side effects
+- replay, screenshots, JSON + SHA-256 receipt survive
 
 Source: https://github.com/nishantkumar1292/solari-cookbook/tree/main/projects/airlock
 
